@@ -25,6 +25,7 @@ public class PlayerDaoImpl implements PlayerDao {
         Page<CipherPlayer> page = new Page<>();
         page.setCurrent(current);
         page.setSize(size);
+
         playerMapper.selectPage(page, null);
         List<Player> players=null;
         Page<Player> page1 = new Page<>();
