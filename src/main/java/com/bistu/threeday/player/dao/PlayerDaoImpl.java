@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,18 +26,35 @@ public class PlayerDaoImpl implements PlayerDao {
         page.setCurrent(current);
         page.setSize(size);
         playerMapper.selectPage(page, null);
-        PlayerEncrypter playerEncrypter = new PlayerEncrypter();
-        List<Player> players = playerEncrypter.decryptBatchPlayer(page.getRecords());
+        List<Player> players=null;
         Page<Player> page1 = new Page<>();
         BeanUtils.copyProperties(page, page1);
-        page1.setRecords(players);
+        if(page.getRecords().size() > 0) {
+            PlayerEncrypter playerEncrypter = new PlayerEncrypter();
+            players = playerEncrypter.decryptBatchPlayer(page.getRecords());
+            page1.setRecords(players);
+        }
         return page1;
     }
 
     @Override
-    public Player getOnePlayPage(int id) throws Exception {
+    public Player getOnePlayer(int id) throws Exception {
         CipherPlayer cipherPlayer = playerMapper.selectById(id);
+        if(cipherPlayer!=null) {
+            PlayerEncrypter playerEncrypter = new PlayerEncrypter();
+            return playerEncrypter.decryptCipherPlayer(cipherPlayer);
+        } else {
+            return null;
+        }
+
+    }
+
+    @Override
+    public void insertBatch(List<Player> players) throws Exception {
         PlayerEncrypter playerEncrypter = new PlayerEncrypter();
-        return playerEncrypter.decryptCipherPlayer(cipherPlayer);
+        List<CipherPlayer> cipherPlayerList = playerEncrypter.encryptBatchPlayer(players);
+        for (CipherPlayer cipherPlayer : cipherPlayerList) {
+            playerMapper.insert(cipherPlayer);
+        }
     }
 }
