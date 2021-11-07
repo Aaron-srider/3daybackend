@@ -17,6 +17,8 @@ import java.util.List;
  * @Description
  * @Date 2021/11/7 - 13:58
  */
+
+@CrossOrigin
 @RestController
 public class PlayerController {
 	@Autowired
