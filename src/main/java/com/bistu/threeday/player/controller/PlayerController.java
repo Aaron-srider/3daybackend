@@ -20,6 +20,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@CrossOrigin
 public class PlayerController {
 	@Autowired
 	private PlayerService playerService;
@@ -31,9 +32,9 @@ public class PlayerController {
 	 * @return
 	 */
 	@GetMapping("getInfo/{page}/{limit}")
-	public List<Player> getInfo(@PathVariable Integer page, @PathVariable Integer limit) {
+	public IPage<Player> getInfo(@PathVariable Integer page, @PathVariable Integer limit) {
 		IPage<Player> result = playerService.selectPage(page, limit);
-		return result.getRecords();
+		return result;
 	}
 	
 	/**
