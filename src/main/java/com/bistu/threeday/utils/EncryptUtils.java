@@ -44,6 +44,9 @@ public class EncryptUtils {
      * @return 二进制密文（byte[]）
      */
     public static byte[] encrypt(String decrypts) throws Exception{
+        if(decrypts == null){
+            return null;
+        }
         //密钥库
         KeyLibrary library = new KeyLibrary();
         //取钥匙加密
@@ -58,6 +61,10 @@ public class EncryptUtils {
      * @return 字符串明文
      */
     public static String decrypt(byte[] encrypts) throws Exception{
+
+        if(encrypts == null){
+            return null;
+        }
         //密钥库
         KeyLibrary library = new KeyLibrary();
         //取钥匙加密

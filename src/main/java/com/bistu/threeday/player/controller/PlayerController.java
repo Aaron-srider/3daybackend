@@ -20,7 +20,6 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@CrossOrigin
 public class PlayerController {
 	@Autowired
 	private PlayerService playerService;
